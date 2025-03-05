@@ -1,0 +1,34 @@
+# 设置CMake最低版本要求
+cmake_minimum_required(VERSION 3.10)
+
+# 设置项目名称
+project(app C)
+
+# 设置C标准
+set(CMAKE_C_STANDARD 99)
+
+# 在交叉编译时强制使用静态链接
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+
+# 添加宏定义
+add_definitions(-D__CV181X__)
+
+# 添加头文件路径
+include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(${CMAKE_SOURCE_DIR}/../cvi_mpi/include)
+
+# 添加库文件路径
+link_directories(${CMAKE_SOURCE_DIR}/../cvi_mpi/lib)
+
+# 强制使用静态版本的 pthread  math c 库 
+# find_library(PTHREAD_LIBRARIES libpthread.a PATHS ${CMAKE_SOURCE_DIR}/../host-tools/gcc/riscv64-linux-x86_64/sysroot/usr/lib64v0p7_xthead/lp64d NO_DEFAULT_PATH)
+# find_library(MATH_LIBRARIES libm.a PATHS ${CMAKE_SOURCE_DIR}/../host-tools/gcc/riscv64-linux-x86_64/sysroot/usr/lib64v0p7_xthead/lp64d NO_DEFAULT_PATH)
+# find_library(C_LIBRARIES libc.a PATHS ${CMAKE_SOURCE_DIR}/../host-tools/gcc/riscv64-linux-x86_64/sysroot/usr/lib64v0p7_xthead/lp64d NO_DEFAULT_PATH)
+
+# 添加可执行文件
+add_executable(app src/main.c)
+
+# 添加链接库
+# target_link_libraries(app PRIVATE libsys.a ${PTHREAD_LIBRARIES} ${MATH_LIBRARIES} ${C_LIBRARIES})
+
+target_link_libraries(app PRIVATE libsys.a)
